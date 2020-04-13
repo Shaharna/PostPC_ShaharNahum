@@ -21,7 +21,8 @@
         app:layout_constraintVertical_bias="0.15"
         android:textSize="20sp"
         android:minWidth="250dp"
-        android:maxWidth="250dp"/>
+        android:maxWidth="250dp"
+        android:freezesText="true"/>
 
     <EditText
         android:id="@+id/inputText"
@@ -39,7 +40,7 @@
         android:maxWidth="250dp"
         android:inputType="text"
         android:importantForAutofill="no"
-        tools:ignore="LabelFor" />
+        android:hint="@string/what_s_your_todo" />
 
     <Button
         android:id="@+id/createBtn"

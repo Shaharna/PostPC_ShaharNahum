@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">PostPC_ShaharNahum</string>
     <string name="create">Create</string>
+    <string name="what_s_your_todo">What\'s your TODO?</string>
 </resources>
