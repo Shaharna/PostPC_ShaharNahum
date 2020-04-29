@@ -12,16 +12,16 @@ import java.util.ArrayList;
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
 
+    private OnTodoClickListener _todoClickListener;
     private ArrayList<Todo> _todoList = new ArrayList<>();
+
+    void setOnTodoClickListener(OnTodoClickListener todoClickListener){
+        _todoClickListener = todoClickListener;
+    }
 
     void setTodoList(ArrayList<Todo> todos){
         _todoList.clear();
         _todoList.addAll(todos);
-        notifyDataSetChanged();
-    }
-
-    void addTodoToList(Todo todo){
-        _todoList.add(todo);
         notifyDataSetChanged();
     }
 
@@ -36,8 +36,22 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TodoHolder holder, int position) {
-        Todo todo = _todoList.get(position);
+        final Todo todo = _todoList.get(position);
         holder.text.setText(todo._description);
+        if (todo._isDone){
+            holder.image.setImageResource(R.drawable.done_todo);
+        }
+        else
+        {
+            holder.image.setImageResource(R.drawable.undone_todo);
+        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (_todoClickListener != null) {
+                    _todoClickListener.onTodoClicked(todo);
+                }
+            }
+        });
     }
 
     @Override
