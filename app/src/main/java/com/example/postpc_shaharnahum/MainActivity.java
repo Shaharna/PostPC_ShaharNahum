@@ -1,12 +1,13 @@
 package com.example.postpc_shaharnahum;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,21 +16,52 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    final ArrayList<Todo> todos = new ArrayList<>();
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int size = todos.size();
+        final boolean[] isDoneArray = new boolean[size];
+        final String[] descriptionArray = new String[size];
+        for (int i =0; i < size; ++i)
+        {
+            isDoneArray[i] = todos.get(i)._isDone;
+            descriptionArray[i] = todos.get(i)._description;
+        }
+        outState.putBooleanArray("isDoneArray",isDoneArray);
+        outState.putStringArray("descriptionArray", descriptionArray);
+        Log.d("3", String.valueOf(todos.size()));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         boolean reverseLayout = false;
-
-        final ArrayList<Todo> todos = new ArrayList<>();
         final TodoAdapter adapter = new TodoAdapter();
-
         final EditText editText = findViewById(R.id.inputText);
         final Button createBtn = findViewById(R.id.createBtn);
-
         todos.clear();
-        todos.addAll(Todo.createTodoList());
+
+        if(savedInstanceState == null) {
+            todos.addAll(Todo.createTodoList());
+        }
+        else{
+            boolean isDone;
+            String description;
+            final boolean[] isDoneArray = savedInstanceState.getBooleanArray("isDoneArray");
+            final String[] descriptionArray = savedInstanceState.getStringArray("descriptionArray");
+            for (int i =0; i < isDoneArray.length; ++i)
+            {
+                isDone = isDoneArray[i];
+                description = descriptionArray[i];
+                todos.add(new Todo(description, isDone));
+            }
+            Log.d("2", String.valueOf(todos.size()));
+        }
+        Log.d("1", String.valueOf(todos.size()));
         adapter.setTodoList(todos);
 
         RecyclerView todoRecycler = findViewById(R.id.todo_recycler);
