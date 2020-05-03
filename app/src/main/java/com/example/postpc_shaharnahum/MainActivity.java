@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         }
         outState.putBooleanArray("isDoneArray",isDoneArray);
         outState.putStringArray("descriptionArray", descriptionArray);
-        Log.d("3", String.valueOf(todos.size()));
     }
 
     @Override
@@ -59,9 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 description = descriptionArray[i];
                 todos.add(new Todo(description, isDone));
             }
-            Log.d("2", String.valueOf(todos.size()));
         }
-        Log.d("1", String.valueOf(todos.size()));
         adapter.setTodoList(todos);
 
         RecyclerView todoRecycler = findViewById(R.id.todo_recycler);
@@ -89,8 +85,11 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnTodoClickListener(new OnTodoClickListener() {
             @Override
             public void onTodoClicked(Todo todo) {
-                todo._isDone = true;
-                adapter.setTodoList(todos);
+                if (! todo._isDone)
+                {
+                    todo._isDone = true;
+                    adapter.setTodoList(todos);
+                }
             }
         });
     }
