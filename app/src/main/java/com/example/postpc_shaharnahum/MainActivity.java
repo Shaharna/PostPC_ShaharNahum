@@ -23,13 +23,17 @@ public class MainActivity extends AppCompatActivity {
         int size = todos.size();
         final boolean[] isDoneArray = new boolean[size];
         final String[] descriptionArray = new String[size];
+        final String[] idArray = new String[size];
+
         for (int i =0; i < size; ++i)
         {
             isDoneArray[i] = todos.get(i)._isDone;
             descriptionArray[i] = todos.get(i)._description;
+            idArray[i] = todos.get(i)._id;
         }
         outState.putBooleanArray("isDoneArray",isDoneArray);
         outState.putStringArray("descriptionArray", descriptionArray);
+        outState.putStringArray("idArray", idArray);
     }
 
     @Override
@@ -37,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final TodoBoomApp myApp = (TodoBoomApp) getApplicationContext();
         boolean reverseLayout = false;
         final TodoAdapter adapter = new TodoAdapter();
         final EditText editText = findViewById(R.id.inputText);
@@ -44,18 +49,20 @@ public class MainActivity extends AppCompatActivity {
         todos.clear();
 
         if(savedInstanceState == null) {
-            todos.addAll(Todo.createTodoList());
+            todos.addAll(myApp.getItemsList());
         }
         else{
             boolean isDone;
-            String description;
+            String description, id;
             final boolean[] isDoneArray = savedInstanceState.getBooleanArray("isDoneArray");
             final String[] descriptionArray = savedInstanceState.getStringArray("descriptionArray");
+            final String[] idArray = savedInstanceState.getStringArray("idArray");
             for (int i =0; i < isDoneArray.length; ++i)
             {
                 isDone = isDoneArray[i];
                 description = descriptionArray[i];
-                todos.add(new Todo(description, isDone));
+                id = idArray[i];
+                todos.add(new Todo(description, isDone, id));
             }
         }
         adapter.setTodoList(todos);
@@ -76,9 +83,13 @@ public class MainActivity extends AppCompatActivity {
                     toast.show();
                 }
                 else {
-                    todos.add(new Todo(editText.getText().toString()));
+                    int id = myApp.getItemsCounter();
+                    todos.add(new Todo(editText.getText().toString(), String.valueOf(id)));
                     adapter.setTodoList(todos);
                     editText.getText().clear();
+                    myApp.increaseItemsCounter();
+                    myApp.updateIdList(id);
+                    myApp._saver.updateListSaver(todos);
                 }
             }
         });
@@ -90,6 +101,11 @@ public class MainActivity extends AppCompatActivity {
                     todo._isDone = true;
                     adapter.setTodoList(todos);
                 }
+            }
+
+            @Override
+            public void onTodoLongClicked(Todo todo) {
+
             }
         });
     }
