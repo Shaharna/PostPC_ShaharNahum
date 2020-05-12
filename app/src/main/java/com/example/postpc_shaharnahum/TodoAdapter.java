@@ -58,7 +58,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
                 if (_todoClickListener != null) {
                     _todoClickListener.onTodoLongClicked(todo);
                 }
-                return false;
+                return true;
             }
         });
 

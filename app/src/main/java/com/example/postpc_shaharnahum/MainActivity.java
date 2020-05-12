@@ -102,18 +102,19 @@ public class MainActivity extends AppCompatActivity {
                 if (!todo._isDone) {
                     todo._isDone = true;
                     adapter.setTodoList(todos);
+                    myApp._saver.updateListSaverAfterChecked(todo);
                 }
             }
 
             @Override
             public void onTodoLongClicked(final Todo todo) {
 
-                View activity_main = (View) findViewById(R.id.activity_main_xml);
+                View activity_main = findViewById(R.id.activity_main_xml);
                 LayoutInflater layoutInflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View customView = layoutInflater.inflate(R.layout.popup_window, null);
 
-                closePopupBtn = (Button) customView.findViewById(R.id.popup_close_btn);
-                deletePopupBtn = (Button) customView.findViewById(R.id.popup_delete_btn);
+                closePopupBtn = customView.findViewById(R.id.popup_close_btn);
+                deletePopupBtn = customView.findViewById(R.id.popup_delete_btn);
 
                 //instantiate popup window
                 popupWindow = new PopupWindow(customView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);

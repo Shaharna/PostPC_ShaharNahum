@@ -46,7 +46,7 @@ class TodoListSaver {
         _currentIdList.add(id);
     }
 
-    void deleteIdFromList(int id)
+    void deleteIdFromList(Integer id)
     {
         _currentIdList.remove(id);
     }
@@ -76,7 +76,7 @@ class TodoListSaver {
     {
         SharedPreferences spForTodoList = PreferenceManager.getDefaultSharedPreferences(_myAppContext);
         SharedPreferences.Editor edit = spForTodoList.edit();
-        spForTodoList.edit().clear().apply();
+        edit.clear();
         Gson gson = new Gson();
         edit.putString(CURRENT_IDS,gson.toJson(_currentIdList));
         edit.putInt(NUMBER_OF_ITEMS, _myAppContext.getItemsCounter());
@@ -86,4 +86,17 @@ class TodoListSaver {
         }
         edit.apply();
     }
+
+    void updateListSaverAfterChecked(Todo todo)
+    {
+        SharedPreferences spForTodoList = PreferenceManager.getDefaultSharedPreferences(_myAppContext);
+        SharedPreferences.Editor edit = spForTodoList.edit();
+        Gson gson = new Gson();
+        edit.putString(CURRENT_IDS,gson.toJson(_currentIdList));
+        edit.putInt(NUMBER_OF_ITEMS, _myAppContext.getItemsCounter());
+        edit.remove(todo._id);
+        edit.putString(todo._id, gson.toJson(todo));
+        edit.apply();
+    }
+
 }
