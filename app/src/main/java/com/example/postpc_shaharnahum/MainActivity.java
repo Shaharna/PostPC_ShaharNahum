@@ -7,15 +7,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 import java.util.ArrayList;
+import android.view.ViewGroup.LayoutParams;
+
 
 public class MainActivity extends AppCompatActivity {
 
     final ArrayList<Todo> todos = new ArrayList<>();
+    Button closePopupBtn, deletePopupBtn;
+    PopupWindow popupWindow;
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -25,13 +32,12 @@ public class MainActivity extends AppCompatActivity {
         final String[] descriptionArray = new String[size];
         final String[] idArray = new String[size];
 
-        for (int i =0; i < size; ++i)
-        {
+        for (int i = 0; i < size; ++i) {
             isDoneArray[i] = todos.get(i)._isDone;
             descriptionArray[i] = todos.get(i)._description;
             idArray[i] = todos.get(i)._id;
         }
-        outState.putBooleanArray("isDoneArray",isDoneArray);
+        outState.putBooleanArray("isDoneArray", isDoneArray);
         outState.putStringArray("descriptionArray", descriptionArray);
         outState.putStringArray("idArray", idArray);
     }
@@ -48,17 +54,15 @@ public class MainActivity extends AppCompatActivity {
         final Button createBtn = findViewById(R.id.createBtn);
         todos.clear();
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             todos.addAll(myApp.getItemsList());
-        }
-        else{
+        } else {
             boolean isDone;
             String description, id;
             final boolean[] isDoneArray = savedInstanceState.getBooleanArray("isDoneArray");
             final String[] descriptionArray = savedInstanceState.getStringArray("descriptionArray");
             final String[] idArray = savedInstanceState.getStringArray("idArray");
-            for (int i =0; i < isDoneArray.length; ++i)
-            {
+            for (int i = 0; i < isDoneArray.length; ++i) {
                 isDone = isDoneArray[i];
                 description = descriptionArray[i];
                 id = idArray[i];
@@ -74,21 +78,20 @@ public class MainActivity extends AppCompatActivity {
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(editText.getText())){
+                if (TextUtils.isEmpty(editText.getText())) {
                     Context context = getApplicationContext();
                     CharSequence text = "You can't create an empty TODO item, oh silly!";
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
-                }
-                else {
+                } else {
                     int id = myApp.getItemsCounter();
                     todos.add(new Todo(editText.getText().toString(), String.valueOf(id)));
                     adapter.setTodoList(todos);
                     editText.getText().clear();
                     myApp.increaseItemsCounter();
-                    myApp.updateIdList(id);
+                    myApp.addIdToList(id);
                     myApp._saver.updateListSaver(todos);
                 }
             }
@@ -96,15 +99,53 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnTodoClickListener(new OnTodoClickListener() {
             @Override
             public void onTodoClicked(Todo todo) {
-                if (! todo._isDone)
-                {
+                if (!todo._isDone) {
                     todo._isDone = true;
                     adapter.setTodoList(todos);
                 }
             }
 
             @Override
-            public void onTodoLongClicked(Todo todo) {
+            public void onTodoLongClicked(final Todo todo) {
+
+                View activity_main = (View) findViewById(R.id.activity_main_xml);
+                LayoutInflater layoutInflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View customView = layoutInflater.inflate(R.layout.popup_window, null);
+
+                closePopupBtn = (Button) customView.findViewById(R.id.popup_close_btn);
+                deletePopupBtn = (Button) customView.findViewById(R.id.popup_delete_btn);
+
+                //instantiate popup window
+                popupWindow = new PopupWindow(customView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+                //display the popup window
+                popupWindow.showAtLocation(activity_main, Gravity.CENTER, 0, 0);
+
+                //close the popup window on button click
+                closePopupBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
+
+                deletePopupBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        todos.remove(todo);
+                        adapter.setTodoList(todos);
+                        myApp.deleteIdFromList(Integer.parseInt(todo._id));
+                        myApp._saver.updateListSaver(todos);
+                        popupWindow.dismiss();
+
+                        Context context = getApplicationContext();
+                        CharSequence text = "Item deleted";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
+                });
 
             }
         });

@@ -22,9 +22,14 @@ public class TodoBoomApp extends Application {
         _saver.increaseItemsCounter();
     }
 
-    void updateIdList(int id)
+    void addIdToList(int id)
     {
-       _saver.updateIdList(id);
+       _saver.addIdToList(id);
+    }
+
+    void deleteIdFromList(int id)
+    {
+        _saver.deleteIdFromList(id);
     }
 
     ArrayList<Todo> getItemsList()

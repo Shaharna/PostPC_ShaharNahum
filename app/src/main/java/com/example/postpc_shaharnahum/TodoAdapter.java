@@ -7,22 +7,17 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
 
     private OnTodoClickListener _todoClickListener;
-    private View.OnLongClickListener _todoLongClickListener;
     private ArrayList<Todo> _todoList = new ArrayList<>();
 
     void setOnTodoClickListener(OnTodoClickListener todoClickListener){
         _todoClickListener = todoClickListener;
     }
 
-    void setOnTodoLongClickListener(View.OnLongClickListener todoLongClickListener){
-        _todoLongClickListener = todoLongClickListener;
-    }
 
     void setTodoList(ArrayList<Todo> todos){
         _todoList.clear();
@@ -57,14 +52,17 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
                 }
             }
         });
-        holder.itemView.setOnLongClickListener(
-                new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        return false;
-                    }
-                });
-    }
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                if (_todoClickListener != null) {
+                    _todoClickListener.onTodoLongClicked(todo);
+                }
+                return false;
+            }
+        });
+
+        }
 
     @Override
     public int getItemCount() {

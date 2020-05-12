@@ -41,16 +41,20 @@ class TodoListSaver {
         _itemsCounter++;
     }
 
-    void updateIdList(int id)
+    void addIdToList(int id)
     {
         _currentIdList.add(id);
+    }
+
+    void deleteIdFromList(int id)
+    {
+        _currentIdList.remove(id);
     }
 
     private void getLastSavedItems()
     {
         Gson gson = new Gson();
         SharedPreferences spForTodoList = PreferenceManager.getDefaultSharedPreferences(_myAppContext);
-        //spForTodoList.edit().clear().apply();
         _currentIdList = gson.fromJson(spForTodoList.getString(CURRENT_IDS, ""),
                 new TypeToken<ArrayList<Integer>>(){}.getType());
         _itemsCounter = spForTodoList.getInt(NUMBER_OF_ITEMS, 0);
@@ -72,6 +76,7 @@ class TodoListSaver {
     {
         SharedPreferences spForTodoList = PreferenceManager.getDefaultSharedPreferences(_myAppContext);
         SharedPreferences.Editor edit = spForTodoList.edit();
+        spForTodoList.edit().clear().apply();
         Gson gson = new Gson();
         edit.putString(CURRENT_IDS,gson.toJson(_currentIdList));
         edit.putInt(NUMBER_OF_ITEMS, _myAppContext.getItemsCounter());
