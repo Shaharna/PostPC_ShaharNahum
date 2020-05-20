@@ -20,6 +20,11 @@ class Todo {
     String _id;
 
     /**
+     * The id of the firestore document.
+     */
+    String _firestoreDocumentId;
+
+    /**
      * A default constructor/
      * @param description A string for the todoo description.
      * @param isDone A boolean for is the todoo done.
