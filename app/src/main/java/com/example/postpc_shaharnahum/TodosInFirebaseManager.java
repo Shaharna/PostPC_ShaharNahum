@@ -1,7 +1,6 @@
 package com.example.postpc_shaharnahum;
 
 import android.util.Log;
-
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -10,9 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
@@ -43,9 +40,9 @@ public class TodosInFirebaseManager {
                 }
                 TodosInFirebaseManager.this.allTodo.clear();
                 for (QueryDocumentSnapshot document : queryDocumentSnapshots){
-                    Todo todo = document.toObject(Todo)
+                    Todo todo = document.toObject(Todo.class);
+                    TodosInFirebaseManager.this.allTodo.add(todo);
                 }
-
             }
         });
     }
@@ -111,7 +108,4 @@ public class TodosInFirebaseManager {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("todos").document(documentId).delete();
     }
-
-    private void
-
 }

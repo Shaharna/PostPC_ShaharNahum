@@ -7,22 +7,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 import java.util.ArrayList;
-import android.view.ViewGroup.LayoutParams;
 
 
 public class MainActivity extends AppCompatActivity {
 
     final ArrayList<Todo> todos = new ArrayList<>();
-    Button closePopupBtn, deletePopupBtn;
-    PopupWindow popupWindow;
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -34,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < size; ++i) {
             isDoneArray[i] = todos.get(i)._isDone;
-            descriptionArray[i] = todos.get(i)._description;
+            descriptionArray[i] = todos.get(i)._content;
             idArray[i] = todos.get(i)._id;
         }
         outState.putBooleanArray("isDoneArray", isDoneArray);
@@ -45,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         final TodoBoomApp myApp = (TodoBoomApp) getApplicationContext();
@@ -104,50 +99,6 @@ public class MainActivity extends AppCompatActivity {
                     adapter.setTodoList(todos);
                     myApp._saver.updateListSaverAfterChecked(todo);
                 }
-            }
-
-            @Override
-            public void onTodoLongClicked(final Todo todo) {
-
-                View activity_main = findViewById(R.id.activity_main_xml);
-                LayoutInflater layoutInflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View customView = layoutInflater.inflate(R.layout.popup_window, null);
-
-                closePopupBtn = customView.findViewById(R.id.popup_close_btn);
-                deletePopupBtn = customView.findViewById(R.id.popup_delete_btn);
-
-                //instantiate popup window
-                popupWindow = new PopupWindow(customView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-                //display the popup window
-                popupWindow.showAtLocation(activity_main, Gravity.CENTER, 0, 0);
-
-                //close the popup window on button click
-                closePopupBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                    }
-                });
-
-                deletePopupBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        todos.remove(todo);
-                        adapter.setTodoList(todos);
-                        myApp.deleteIdFromList(Integer.parseInt(todo._id));
-                        myApp._saver.updateListSaver(todos);
-                        popupWindow.dismiss();
-
-                        Context context = getApplicationContext();
-                        CharSequence text = "Item deleted";
-                        int duration = Toast.LENGTH_SHORT;
-
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
-                    }
-                });
-
             }
         });
     }

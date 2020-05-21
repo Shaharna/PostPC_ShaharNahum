@@ -1,13 +1,14 @@
 package com.example.postpc_shaharnahum;
 
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.Calendar;
 
 class Todo {
 
     /**
      * A string describing the the Todoo
      */
-    String _description;
+    String _content;
 
     /**
      * A Boolean saying whether or not the Todoo is done.
@@ -25,21 +26,33 @@ class Todo {
     String _firestoreDocumentId;
 
     /**
+     * The creation time stamp of the todo.
+     */
+    Date  _creationTimestamp;
+
+    /**
+     * The update time stamp of the todo
+     */
+    Date  _editTimestamp;
+
+    /**
      * A default constructor/
-     * @param description A string for the todoo description.
+     * @param content A string for the todoo description.
      * @param isDone A boolean for is the todoo done.
      */
-    Todo(String description, boolean isDone, String id){
-        _description = description;
+    Todo(String content, boolean isDone, String id){
+        _content = content;
         _isDone = isDone;
         _id = id;
+        _creationTimestamp = Calendar.getInstance().getTime();
+        _editTimestamp = _creationTimestamp;
     }
     /**
      * A constructor with only String description.
      * @param description A string for description.
      */
     Todo(String description, String id){
-        _description = description;
+        _content = description;
         _isDone = false;
         _id = id;
     }
