@@ -1,9 +1,8 @@
 package com.example.postpc_shaharnahum;
 
-import java.util.Date;
 import java.util.Calendar;
 
-class Todo {
+public class Todo {
 
     /**
      * A string describing the the Todoo
@@ -30,6 +29,10 @@ class Todo {
      */
     String  _editTimestamp;
 
+    /**
+     * No value constructor for firebase.
+     */
+    Todo (){}
     /**
      * A default constructor/
      * @param content A string for the todoo description.
@@ -84,4 +87,29 @@ class Todo {
         _isDone = true;
         _editTimestamp = Calendar.getInstance().getTime().toString();
     }
+
+    void setTodoContent(String newContent){
+        _content = newContent;
+    }
+
+    public String get_content(){
+        return _content;
+    }
+
+    public String get_id(){
+        return _id;
+    }
+
+    public String get_creationTimestamp(){
+        return _creationTimestamp;
+    }
+
+    public String get_editTimestamp(){
+        return _editTimestamp;
+    }
+
+    public boolean get_isDone(){
+        return _isDone;
+    }
+
 }

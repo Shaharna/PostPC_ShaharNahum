@@ -1,6 +1,12 @@
 package com.example.postpc_shaharnahum;
 
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -8,8 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javax.annotation.Nullable;
 
  class TodosInFirebaseManager {
@@ -22,6 +26,7 @@ import javax.annotation.Nullable;
     {
         createLiveQuery();
     }
+    
     static TodosInFirebaseManager getInstance()
      {
          if (single_instance == null)
@@ -29,8 +34,8 @@ import javax.annotation.Nullable;
 
          return single_instance;
      }
-
-     private void createLiveQuery() {
+     
+    private void createLiveQuery() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("todos").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -45,18 +50,19 @@ import javax.annotation.Nullable;
                 }
                 TodosInFirebaseManager.this.allTodo.clear();
                 for (QueryDocumentSnapshot document : queryDocumentSnapshots){
-                    String content = document.getString("content");
-                    String isDone =  document.getString("is done");
-                    boolean isDonebool = false;
-                    if (isDone.equals("true"))
-                    {
-                        isDonebool = true;
-                    }
-                    String id = document.getString("id");
-                    String creationTimestamp = document.getString("creation time stamp");
-                    String editTimestamp = document.getString("edit time stamp");
-                    Todo newTodo = new Todo(content, isDonebool, id, creationTimestamp, editTimestamp);
+                    Todo newTodo = document.toObject(Todo.class);
                     allTodo.add(newTodo);
+                }
+            }
+        });
+        db.collection("todos").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Todo todo = document.toObject(Todo.class);
+                        allTodo.add(todo);
+                    }
                 }
             }
         });
@@ -89,18 +95,8 @@ import javax.annotation.Nullable;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference document = db.collection("todos").document();
         todo._id  = document.getId();
-        Map<String, String> mapTodo = new HashMap<>();
-        mapTodo.put("id", todo._id);
-        mapTodo.put("content", todo._content);
-        if (todo._isDone)
-        {
-            mapTodo.put("is done", "true");
-        }
-        mapTodo.put("is done", "false");
-        mapTodo.put("creation time stamp", todo._creationTimestamp);
-        mapTodo.put("edit time stamp", todo._editTimestamp);
 
-        document.set(mapTodo);
+        document.set(todo);
     }
 
     void markTodoAsDone(Todo todo){
@@ -124,25 +120,22 @@ import javax.annotation.Nullable;
         db.collection("todos").document(documentId).set(todo);
     }
 
-    void editTodo(Todo oldTodo, Todo newTodo){
+    void setTodoContent(Todo oldTodo, String newContent){
 
         int index = allTodo.indexOf(oldTodo);
         if (index == -1){
             Log.e(LOG_TAG, "can't edit todo: could not find this todo");
             return;
         }
-        allTodo.remove(oldTodo);
-        allTodo.add(index, newTodo);
-
+        oldTodo.setTodoContent(newContent);
         // global
         String documentId = oldTodo._id;
         if (documentId == null){
             Log.e(LOG_TAG, "can't edit todo: could not find this todo in firestore");
             return;
         }
-        newTodo._id  = oldTodo._id;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("todos").document(documentId).set(newTodo);
+        db.collection("todos").document(documentId).set(oldTodo);
     }
 
     void deleteTodo(Todo todo){

@@ -7,13 +7,73 @@
     tools:context=".EditTodoActivity">
 
     <TextView
-        android:id="@+id/edit_todo_text_view"
+        android:id="@+id/edit_todo_content_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:textSize="20sp"/>
 
-    
+    <TextView
+        android:id="@+id/edit_todo_creationTimestamp_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/edit_todo_content_text_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/edit_todo_editTimestamp_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/edit_todo_creationTimestamp_text_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:textSize="20sp"/>
+
+    <Button
+        android:id="@+id/edit_todo_apply_btn"
+        android:text="@string/apply_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_todo_editTimestamp_text_view"
+        app:layout_constraintStart_toEndOf="@id/edit_todo_edit_text"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/edit_todo_edit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/edit_todo_apply_btn"
+        app:layout_constraintTop_toBottomOf="@id/edit_todo_editTimestamp_text_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="32dp"
+        android:textSize="20sp"
+        android:minWidth="250dp"
+        android:maxWidth="250dp"
+        android:inputType="text"
+        android:importantForAutofill="no"
+        android:hint="@string/edit_your_todo"/>
+
+    <Button
+        android:id="@+id/edit_todo_mark_done_btn"
+        android:text="@string/mark_as_done_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_todo_edit_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

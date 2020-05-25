@@ -56,11 +56,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTodoClicked(Todo todo) {
                 if (!todo._isDone) {
-//                    Intent intent = new Intent(MainActivity.this, EditTodoActivity.class);
-//                    intent.putExtra("selected todo id", todo._id);
-//                    startActivityForResult(intent, 111);
-                    myApp.markTodoAsDone(todo);
-                    myApp._adapter.setTodoList(myApp.getItemsList());
+                    Intent intent = new Intent(MainActivity.this, EditTodoActivity.class);
+                //else{
+
+                //    }
+                    intent.putExtra("selected todo id", todo._id);
+                    startActivity(intent);
                 }
             }
         });

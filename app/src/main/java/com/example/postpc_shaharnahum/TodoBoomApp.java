@@ -45,4 +45,9 @@ public class TodoBoomApp extends Application {
         _firebaseManager.markTodoAsDone(todo);
     }
 
+    void setTodoContent(Todo todo, String newContent)
+    {
+        _firebaseManager.setTodoContent(todo, newContent);
+    }
+
 }
