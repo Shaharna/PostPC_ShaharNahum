@@ -5,70 +5,34 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    final ArrayList<Todo> todos = new ArrayList<>();
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        int size = todos.size();
-        final boolean[] isDoneArray = new boolean[size];
-        final String[] descriptionArray = new String[size];
-        final String[] idArray = new String[size];
-
-        for (int i = 0; i < size; ++i) {
-            isDoneArray[i] = todos.get(i)._isDone;
-            descriptionArray[i] = todos.get(i)._content;
-            idArray[i] = todos.get(i)._id;
-        }
-        outState.putBooleanArray("isDoneArray", isDoneArray);
-        outState.putStringArray("descriptionArray", descriptionArray);
-        outState.putStringArray("idArray", idArray);
-    }
+    TodoBoomApp myApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
-        final TodoBoomApp myApp = (TodoBoomApp) getApplicationContext();
+        myApp = (TodoBoomApp) getApplicationContext();
+
         boolean reverseLayout = false;
-        final TodoAdapter adapter = new TodoAdapter();
         final EditText editText = findViewById(R.id.inputText);
         final Button createBtn = findViewById(R.id.createBtn);
-        todos.clear();
-
-        if (savedInstanceState == null) {
-            todos.addAll(myApp.getItemsList());
-        } else {
-            boolean isDone;
-            String description, id;
-            final boolean[] isDoneArray = savedInstanceState.getBooleanArray("isDoneArray");
-            final String[] descriptionArray = savedInstanceState.getStringArray("descriptionArray");
-            final String[] idArray = savedInstanceState.getStringArray("idArray");
-            for (int i = 0; i < isDoneArray.length; ++i) {
-                isDone = isDoneArray[i];
-                description = descriptionArray[i];
-                id = idArray[i];
-                todos.add(new Todo(description, isDone, id));
-            }
-        }
-        adapter.setTodoList(todos);
 
         RecyclerView todoRecycler = findViewById(R.id.todo_recycler);
-        todoRecycler.setAdapter(adapter);
+        todoRecycler.setAdapter(myApp._adapter);
         todoRecycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, reverseLayout));
+        myApp._adapter.setTodoList(myApp.getItemsList());
 
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,25 +45,31 @@ public class MainActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 } else {
-                    int id = myApp.getItemsCounter();
-                    todos.add(new Todo(editText.getText().toString(), String.valueOf(id)));
-                    adapter.setTodoList(todos);
+                    Todo newTodo = new Todo(editText.getText().toString());
                     editText.getText().clear();
-                    myApp.increaseItemsCounter();
-                    myApp.addIdToList(id);
-                    myApp._saver.updateListSaver(todos);
+                    myApp.addTodoToList(newTodo);
+                    myApp._adapter.setTodoList(myApp.getItemsList());
                 }
             }
         });
-        adapter.setOnTodoClickListener(new OnTodoClickListener() {
+        myApp._adapter.setOnTodoClickListener(new OnTodoClickListener() {
             @Override
             public void onTodoClicked(Todo todo) {
                 if (!todo._isDone) {
-                    todo._isDone = true;
-                    adapter.setTodoList(todos);
-                    myApp._saver.updateListSaverAfterChecked(todo);
+//                    Intent intent = new Intent(MainActivity.this, EditTodoActivity.class);
+//                    intent.putExtra("selected todo id", todo._id);
+//                    startActivityForResult(intent, 111);
+                    myApp.markTodoAsDone(todo);
+                    myApp._adapter.setTodoList(myApp.getItemsList());
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        myApp._adapter.setTodoList(myApp.getItemsList());
     }
 }

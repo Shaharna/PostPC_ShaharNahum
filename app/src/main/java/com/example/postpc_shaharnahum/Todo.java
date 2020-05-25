@@ -21,51 +21,67 @@ class Todo {
     String _id;
 
     /**
-     * The id of the firestore document.
-     */
-    String _firestoreDocumentId;
-
-    /**
      * The creation time stamp of the todo.
      */
-    Date  _creationTimestamp;
+    String  _creationTimestamp;
 
     /**
      * The update time stamp of the todo
      */
-    Date  _editTimestamp;
+    String  _editTimestamp;
 
     /**
      * A default constructor/
      * @param content A string for the todoo description.
      * @param isDone A boolean for is the todoo done.
      */
-    Todo(String content, boolean isDone, String id){
+    Todo(String content, boolean isDone){
+        _content = content;
+        _isDone = isDone;
+        _creationTimestamp = Calendar.getInstance().getTime().toString();
+        _editTimestamp = _creationTimestamp;
+    }
+
+    /**
+     * A default constructor/
+     * @param content A string for the todoo description.
+     * @param isDone A boolean for is the todoo done.
+     *
+     */
+    Todo(String content, boolean isDone, String id, String creationTimestamp, String editTimestamp ){
         _content = content;
         _isDone = isDone;
         _id = id;
-        _creationTimestamp = Calendar.getInstance().getTime();
-        _editTimestamp = _creationTimestamp;
+        _creationTimestamp = creationTimestamp;
+        _editTimestamp = editTimestamp;
     }
+
     /**
      * A constructor with only String description.
      * @param description A string for description.
      */
-    Todo(String description, String id){
+    Todo(String description){
         _content = description;
         _isDone = false;
-        _id = id;
+        _creationTimestamp = Calendar.getInstance().getTime().toString();
+        _editTimestamp = _creationTimestamp;
     }
 
-//    /**
-//     * This function creates an empty list of Todos.
-//     * @return new ArrayList<Todoo>
-//     */
-//    static ArrayList<Todo> createTodoList(){
-//
-//        ArrayList<Todo> list = new ArrayList<>();
-//        list.add(new Todo("Do homework"));
-//        list.add(new Todo("Clean apartment"));
-//        return list;
-//    }
+    /**
+     * Copy constructor.
+     * @param oldTodo the Todoo needed to be copied.
+     */
+    Todo(Todo oldTodo){
+        _content = oldTodo._content;
+        _isDone = oldTodo._isDone;
+        _creationTimestamp = oldTodo._creationTimestamp;
+        _editTimestamp = _creationTimestamp;
+        _id = oldTodo._id;
+    }
+
+    void markAsDone()
+    {
+        _isDone = true;
+        _editTimestamp = Calendar.getInstance().getTime().toString();
+    }
 }

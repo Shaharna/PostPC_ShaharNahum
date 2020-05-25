@@ -6,39 +6,43 @@ import java.util.ArrayList;
 
 public class TodoBoomApp extends Application {
 
-    TodoListSaver _saver;
+    TodosInFirebaseManager _firebaseManager;
+    TodoAdapter _adapter;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
-        _saver = new TodoListSaver(this);
+        _firebaseManager = TodosInFirebaseManager.getInstance();
+        _adapter =  new TodoAdapter();
 
         Log.i("App launches","Hello, The size of the current todo list is" +
-                String.valueOf(_saver.getAppList().size()) );
+                String.valueOf(_firebaseManager.getAllTodos().size()) );
     }
 
-    void increaseItemsCounter()
+    void addTodoToList(Todo todo)
     {
-        _saver.increaseItemsCounter();
+       _firebaseManager.addTodo(todo);
     }
 
-    void addIdToList(int id)
+    void deleteIdFromList(String id)
     {
-       _saver.addIdToList(id);
-    }
-
-    void deleteIdFromList(int id)
-    {
-        _saver.deleteIdFromList(id);
+        Todo item = _firebaseManager.getTodoFromId(id);
+        _firebaseManager.deleteTodo(item);
     }
 
     ArrayList<Todo> getItemsList()
     {
-      return _saver.getAppList();
+      return _firebaseManager.getAllTodos();
     }
 
-    int getItemsCounter()
-    {
-        return _saver.getItemsCounter();
+     Todo getTodoItemById(String id) {
+        return _firebaseManager.getTodoFromId(id);
     }
+
+    void markTodoAsDone(Todo todo)
+    {
+        _firebaseManager.markTodoAsDone(todo);
+    }
+
 }
