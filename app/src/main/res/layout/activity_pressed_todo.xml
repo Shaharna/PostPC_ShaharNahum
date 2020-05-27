@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditTodoActivity">
+    tools:context=".PressedTodoActivity"
+    android:id="@+id/activity_pressed_todo">
 
     <TextView
-        android:id="@+id/edit_todo_content_text_view"
+        android:id="@+id/pressed_todo_content_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -16,41 +17,11 @@
         android:layout_marginTop="32dp"
         android:textSize="24sp"/>
 
-    <Button
-        android:id="@+id/edit_todo_apply_btn"
-        android:layout_width="84dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="32dp"
-        android:background="@color/colorGreenApprove"
-        android:textColor="#FFF"
-        android:padding="0dp"
-        android:text="@string/apply_btn"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@id/edit_todo_edit_text"
-        app:layout_constraintTop_toBottomOf="@id/edit_todo_content_text_view"
-        android:layout_marginStart="16dp"/>
-
-    <EditText
-        android:id="@+id/edit_todo_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/edit_todo_apply_btn"
-        app:layout_constraintTop_toBottomOf="@id/edit_todo_content_text_view"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="32dp"
-        android:textSize="18sp"
-        android:minWidth="250dp"
-        android:maxWidth="250dp"
-        android:inputType="text"
-        android:importantForAutofill="no"
-        android:hint="@string/edit_your_todo"/>
-
     <TextView
-        android:id="@+id/edit_todo_creationTimestamp_headline_text_view"
+        android:id="@+id/pressed_todo_creationTimestamp_headline_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/edit_todo_edit_text"
+        app:layout_constraintTop_toBottomOf="@id/pressed_todo_content_text_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/creation_timestamp"
@@ -58,19 +29,19 @@
         android:textSize="20sp"/>
 
     <TextView
-        android:id="@+id/edit_todo_creationTimestamp_text_view"
+        android:id="@+id/pressed_todo_creationTimestamp_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/edit_todo_creationTimestamp_headline_text_view"
+        app:layout_constraintTop_toBottomOf="@id/pressed_todo_creationTimestamp_headline_text_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="20sp"/>
 
     <TextView
-        android:id="@+id/edit_todo_editTimestamp_headline_text_view"
+        android:id="@+id/pressed_todo_editTimestamp_headline_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/edit_todo_creationTimestamp_text_view"
+        app:layout_constraintTop_toBottomOf="@id/pressed_todo_creationTimestamp_text_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/edit_timestamp"
@@ -78,22 +49,37 @@
         android:textSize="20sp"/>
 
     <TextView
-        android:id="@+id/edit_todo_editTimestamp_text_view"
+        android:id="@+id/pressed_todo_editTimestamp_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/edit_todo_editTimestamp_headline_text_view"
+        app:layout_constraintTop_toBottomOf="@id/pressed_todo_editTimestamp_headline_text_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="20sp"/>
 
     <Button
-        android:id="@+id/edit_todo_mark_done_btn"
-        android:text="@string/mark_as_done_btn"
-        android:layout_width="250dp"
+        android:id="@+id/pressed_todo_mark_undone_btn"
+        android:text="@string/mark_as_undone"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_todo_editTimestamp_text_view"
+        app:layout_constraintTop_toBottomOf="@id/pressed_todo_editTimestamp_text_view"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/pressed_todo_delete_btn"
+        android:padding="10dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorGreenApprove"
+        android:textColor="#FFF"/>
+
+    <Button
+        android:id="@+id/pressed_todo_delete_btn"
+        android:text="@string/delete_todo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pressed_todo_editTimestamp_text_view"
+        app:layout_constraintStart_toEndOf="@+id/pressed_todo_mark_undone_btn"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="10dp"
         android:layout_marginEnd="16dp"

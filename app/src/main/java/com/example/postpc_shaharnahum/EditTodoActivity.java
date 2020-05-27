@@ -22,7 +22,9 @@ public class EditTodoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_todo);
         final TodoBoomApp myApp = (TodoBoomApp) getApplicationContext();
 
-        final TextView textView = findViewById(R.id.edit_todo_content_text_view);
+        final TextView contentTextView = findViewById(R.id.edit_todo_content_text_view);
+        final TextView creationStampTextView = findViewById(R.id.edit_todo_creationTimestamp_text_view);
+        final TextView editStampTextView = findViewById(R.id.edit_todo_editTimestamp_text_view);
         final Button applyBtn = findViewById(R.id.edit_todo_apply_btn);
         final Button markDoneBtn = findViewById(R.id.edit_todo_mark_done_btn);
         final EditText editText = findViewById(R.id.edit_todo_edit_text);
@@ -31,7 +33,9 @@ public class EditTodoActivity extends AppCompatActivity {
         String todoId = intentCreatedMe.getStringExtra("selected todo id");
         final Todo todo = myApp.getTodoItemById(todoId);
 
-        textView.setText(todo._content);
+        contentTextView.setText(todo._content);
+        creationStampTextView.setText(todo._creationTimestamp);
+        editStampTextView.setText(todo._editTimestamp);
 
         applyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +50,7 @@ public class EditTodoActivity extends AppCompatActivity {
                 } else {
                     myApp.setTodoContent(todo, editText.getText().toString());
                     editText.getText().clear();
-                    textView.setText(todo._content);
+                    contentTextView.setText(todo._content);
                     myApp._adapter.setTodoList(myApp.getItemsList());
                     Context context = getApplicationContext();
                     CharSequence text = "Edition was made successfully";

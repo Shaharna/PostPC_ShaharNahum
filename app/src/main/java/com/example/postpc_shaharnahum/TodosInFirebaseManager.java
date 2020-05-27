@@ -55,17 +55,6 @@ import javax.annotation.Nullable;
                 }
             }
         });
-        db.collection("todos").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Todo todo = document.toObject(Todo.class);
-                        allTodo.add(todo);
-                    }
-                }
-            }
-        });
     }
 
     Todo getTodoFromId(String id){
@@ -120,7 +109,29 @@ import javax.annotation.Nullable;
         db.collection("todos").document(documentId).set(todo);
     }
 
-    void setTodoContent(Todo oldTodo, String newContent){
+     void markTodoUnDone(Todo todo){
+
+         int index = allTodo.indexOf(todo);
+         if (index == -1){
+             Log.e(LOG_TAG, "can't mark todo as done: could not find this todo");
+             return;
+         }
+         todo.markUnDone();
+         //local change
+         allTodo.set(index, todo);
+
+         //global change
+         String documentId = todo._id;
+         if (documentId == null){
+             Log.e(LOG_TAG, "can't mark todo as done: could not find this todo in firestore");
+             return;
+         }
+         FirebaseFirestore db = FirebaseFirestore.getInstance();
+         db.collection("todos").document(documentId).set(todo);
+     }
+
+
+     void setTodoContent(Todo oldTodo, String newContent){
 
         int index = allTodo.indexOf(oldTodo);
         if (index == -1){

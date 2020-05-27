@@ -88,6 +88,12 @@ public class Todo {
         _editTimestamp = Calendar.getInstance().getTime().toString();
     }
 
+    void markUnDone()
+    {
+        _isDone = false;
+        _editTimestamp = Calendar.getInstance().getTime().toString();
+    }
+
     void setTodoContent(String newContent){
         _content = newContent;
     }

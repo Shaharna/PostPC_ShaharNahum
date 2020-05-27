@@ -25,10 +25,9 @@ public class TodoBoomApp extends Application {
        _firebaseManager.addTodo(todo);
     }
 
-    void deleteIdFromList(String id)
+    void deleteIdFromList(Todo todo)
     {
-        Todo item = _firebaseManager.getTodoFromId(id);
-        _firebaseManager.deleteTodo(item);
+        _firebaseManager.deleteTodo(todo);
     }
 
     ArrayList<Todo> getItemsList()
@@ -43,6 +42,11 @@ public class TodoBoomApp extends Application {
     void markTodoAsDone(Todo todo)
     {
         _firebaseManager.markTodoAsDone(todo);
+    }
+
+    void markTodoUnDone(Todo todo)
+    {
+        _firebaseManager.markTodoUnDone(todo);
     }
 
     void setTodoContent(Todo todo, String newContent)

@@ -5,7 +5,11 @@
     <string name="are_you_sure_to_delete">Are You Sure to delete?</string>
     <string name="close">Close</string>
     <string name="delete">Delete</string>
-    <string name="edit_your_todo">EDIT YOUR TODO</string>
+    <string name="edit_your_todo">EDIT YOUR TODO HERE</string>
     <string name="apply_btn">Apply</string>
     <string name="mark_as_done_btn">Mark as done</string>
+    <string name="creation_timestamp">Creation timestamp:</string>
+    <string name="edit_timestamp">Edit timestamp:</string>
+    <string name="mark_as_undone">MARK AS UNDONE</string>
+    <string name="delete_todo">DELETE TODO</string>
 </resources>
