@@ -1,13 +1,15 @@
 package com.example.postpc_shaharnahum;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 }
         });
-    }
+        registerReceiver(myReceiver, new IntentFilter("got_data_from_Firebase"));
+}
 
     @Override
     protected void onResume(){
@@ -74,4 +77,28 @@ public class MainActivity extends AppCompatActivity {
 
         myApp._adapter.setTodoList(myApp.getItemsList());
     }
+
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent == null)
+            {
+                return;
+            }
+            if (intent.getAction() != "got_data_from_Firebase")
+            {
+                return;
+            }
+            myApp._adapter.setTodoList(myApp.getItemsList());
+        }
+    };
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver(myReceiver);
+    }
+
+
 }
+

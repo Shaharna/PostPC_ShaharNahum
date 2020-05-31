@@ -13,7 +13,7 @@ public class TodoBoomApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        _firebaseManager = TodosInFirebaseManager.getInstance();
+        _firebaseManager = TodosInFirebaseManager.getInstance(this);
         _adapter =  new TodoAdapter();
 
         Log.i("App launches","Hello, The size of the current todo list is" +

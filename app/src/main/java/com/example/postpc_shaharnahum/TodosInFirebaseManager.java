@@ -1,5 +1,6 @@
 package com.example.postpc_shaharnahum;
 
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -18,19 +19,21 @@ import javax.annotation.Nullable;
 
  class TodosInFirebaseManager {
 
+    private TodoBoomApp myApp;
      private static final String LOG_TAG = "FirestoreTodosManager";
      private static TodosInFirebaseManager single_instance = null;
     private ArrayList<Todo> allTodo = new ArrayList<>();
 
-    private TodosInFirebaseManager()
+    private TodosInFirebaseManager(TodoBoomApp app)
     {
+        myApp = app;
         createLiveQuery();
     }
     
-    static TodosInFirebaseManager getInstance()
+    static TodosInFirebaseManager getInstance(TodoBoomApp app)
      {
          if (single_instance == null)
-             single_instance = new TodosInFirebaseManager();
+             single_instance = new TodosInFirebaseManager(app);
 
          return single_instance;
      }
@@ -53,6 +56,9 @@ import javax.annotation.Nullable;
                     Todo newTodo = document.toObject(Todo.class);
                     allTodo.add(newTodo);
                 }
+                Intent intent = new Intent();
+                intent.setAction("got_data_from_Firebase");
+                myApp.getApplicationContext().sendBroadcast(intent);
             }
         });
     }
