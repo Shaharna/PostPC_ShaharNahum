@@ -26,7 +26,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/colorGreenApprove"
+        android:background="@color/colorApproveBtn"
         android:textColor="#FFF"/>
 
     <EditText

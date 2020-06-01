@@ -37,14 +37,14 @@ public class PressedTodoActivity extends AppCompatActivity {
         String todoId = intentCreatedMe.getStringExtra("selected todo id");
         final Todo todo = myApp.getTodoItemById(todoId);
 
-        contentTextView.setText(todo._content);
-        creationStampTextView.setText(todo._creationTimestamp);
-        editStampTextView.setText(todo._editTimestamp);
+        contentTextView.setText(todo.getContent());
+        creationStampTextView.setText(todo.getCreationTimestamp());
+        editStampTextView.setText(todo.getEditTimestamp());
 
         markUndoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ( todo._isDone) {
+                if ( todo.getIsDone()) {
                     myApp.markTodoUnDone(todo);
                     myApp._adapter.setTodoList(myApp.getItemsList());
 

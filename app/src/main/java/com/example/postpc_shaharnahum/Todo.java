@@ -7,7 +7,7 @@ public class Todo {
     /**
      * A string describing the the Todoo
      */
-    String _content;
+    private String _content;
 
     /**
      * A Boolean saying whether or not the Todoo is done.
@@ -17,17 +17,17 @@ public class Todo {
     /**
      * The id of the item
      */
-    String _id;
+    private String _id;
 
     /**
      * The creation time stamp of the todo.
      */
-    String  _creationTimestamp;
+    private String  _creationTimestamp;
 
     /**
      * The update time stamp of the todo
      */
-    String  _editTimestamp;
+    private String  _editTimestamp;
 
     /**
      * No value constructor for firebase.
@@ -84,38 +84,62 @@ public class Todo {
 
     void markAsDone()
     {
-        _isDone = true;
+         setIsDone(true);
         _editTimestamp = Calendar.getInstance().getTime().toString();
     }
 
     void markUnDone()
     {
-        _isDone = false;
+        setIsDone(false);
         _editTimestamp = Calendar.getInstance().getTime().toString();
     }
 
-    void setTodoContent(String newContent){
+    void applyTodoContent(String content)
+    {
+        setContent(content);
+        _editTimestamp = Calendar.getInstance().getTime().toString();
+    }
+
+    void setContent(String newContent){
         _content = newContent;
     }
 
-    public String get_content(){
+    public String getContent(){
         return _content;
     }
 
-    public String get_id(){
+    public String getId(){
         return _id;
     }
 
-    public String get_creationTimestamp(){
+    public String getCreationTimestamp(){
         return _creationTimestamp;
     }
 
-    public String get_editTimestamp(){
+    public String getEditTimestamp(){
         return _editTimestamp;
     }
 
-    public boolean get_isDone(){
+    public boolean getIsDone(){
         return _isDone;
     }
 
-}
+    public void setId(String id)
+    {
+        _id = id;
+    }
+
+    public void setCreationTimestamp(String _creationTimestamp) {
+        this._creationTimestamp = _creationTimestamp;
+    }
+
+    public void setEditTimestamp(String _editTimestamp) {
+        this._editTimestamp = _editTimestamp;
+    }
+
+    public void setIsDone(boolean isDone)
+    {
+        _isDone = isDone;
+    }
+
+    }

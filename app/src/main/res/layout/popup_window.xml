@@ -16,15 +16,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="32dp"
-        android:textSize="20sp"
-        android:textColor="#FFF"/>
+        android:textSize="20sp"/>
 
     <Button
         android:id="@+id/popup_close_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/close"
-        android:background="@color/colorAccent"
+        android:background="@color/colorApproveBtn"
         android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/popup_text"
@@ -41,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/delete"
-        android:background="@color/colorAccent"
+        android:background="@color/colorDeleteBtn"
         android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/popup_text"

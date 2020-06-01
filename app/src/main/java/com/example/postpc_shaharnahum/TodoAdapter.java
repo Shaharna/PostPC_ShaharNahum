@@ -37,8 +37,8 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
     @Override
     public void onBindViewHolder(@NonNull TodoHolder holder, int position) {
         final Todo todo = _todoList.get(position);
-        holder.text.setText(todo._content);
-        if (todo._isDone){
+        holder.text.setText(todo.getContent());
+        if (todo.getIsDone()){
             holder.image.setImageResource(R.drawable.done_todo);
         }
         else

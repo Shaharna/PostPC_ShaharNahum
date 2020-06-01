@@ -66,7 +66,7 @@ import javax.annotation.Nullable;
     Todo getTodoFromId(String id){
         for (Todo item: allTodo)
         {
-            if (item._id.equals(id) ){
+            if (item.getId().equals(id) ){
                 return item;
             }
         }
@@ -89,7 +89,7 @@ import javax.annotation.Nullable;
         //global
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference document = db.collection("todos").document();
-        todo._id  = document.getId();
+        todo.setId(document.getId());
 
         document.set(todo);
     }
@@ -106,7 +106,7 @@ import javax.annotation.Nullable;
         allTodo.set(index, todo);
 
         //global change
-        String documentId = todo._id;
+        String documentId = todo.getId();
         if (documentId == null){
             Log.e(LOG_TAG, "can't mark todo as done: could not find this todo in firestore");
             return;
@@ -115,7 +115,7 @@ import javax.annotation.Nullable;
         db.collection("todos").document(documentId).set(todo);
     }
 
-     void markTodoUnDone(Todo todo){
+    void markTodoUnDone(Todo todo){
 
          int index = allTodo.indexOf(todo);
          if (index == -1){
@@ -127,7 +127,7 @@ import javax.annotation.Nullable;
          allTodo.set(index, todo);
 
          //global change
-         String documentId = todo._id;
+         String documentId = todo.getId();
          if (documentId == null){
              Log.e(LOG_TAG, "can't mark todo as done: could not find this todo in firestore");
              return;
@@ -136,17 +136,16 @@ import javax.annotation.Nullable;
          db.collection("todos").document(documentId).set(todo);
      }
 
-
-     void setTodoContent(Todo oldTodo, String newContent){
+    void setTodoContent(Todo oldTodo, String newContent){
 
         int index = allTodo.indexOf(oldTodo);
         if (index == -1){
             Log.e(LOG_TAG, "can't edit todo: could not find this todo");
             return;
         }
-        oldTodo.setTodoContent(newContent);
+        oldTodo.applyTodoContent(newContent);
         // global
-        String documentId = oldTodo._id;
+        String documentId = oldTodo.getId();
         if (documentId == null){
             Log.e(LOG_TAG, "can't edit todo: could not find this todo in firestore");
             return;
@@ -165,7 +164,7 @@ import javax.annotation.Nullable;
         allTodo.remove(todo);
 
         // delete global
-        String documentId = todo._id;
+        String documentId = todo.getId();
         if (documentId == null){
             Log.e(LOG_TAG, "can't delete todo: could not find this todo in firestore");
             return;

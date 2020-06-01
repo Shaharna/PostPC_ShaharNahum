@@ -30,16 +30,17 @@ public class EditTodoActivity extends AppCompatActivity {
         final EditText editText = findViewById(R.id.edit_todo_edit_text);
 
         Intent intentCreatedMe = getIntent();
-        String todoId = intentCreatedMe.getStringExtra("selected todo id");
-        final Todo todo = myApp.getTodoItemById(todoId);
+        final String todoId = intentCreatedMe.getStringExtra("selected todo id");
+        Todo todo = myApp.getTodoItemById(todoId);
 
-        contentTextView.setText(todo._content);
-        creationStampTextView.setText(todo._creationTimestamp);
-        editStampTextView.setText(todo._editTimestamp);
+        contentTextView.setText(todo.getContent());
+        creationStampTextView.setText(todo.getCreationTimestamp());
+        editStampTextView.setText(todo.getEditTimestamp());
 
         applyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Todo todo = myApp.getTodoItemById(todoId);
                 if (TextUtils.isEmpty(editText.getText())) {
                     Context context = getApplicationContext();
                     CharSequence text = "You can't apply an empty text to a TODO item, oh silly!";
@@ -50,7 +51,7 @@ public class EditTodoActivity extends AppCompatActivity {
                 } else {
                     myApp.setTodoContent(todo, editText.getText().toString());
                     editText.getText().clear();
-                    contentTextView.setText(todo._content);
+                    contentTextView.setText(todo.getContent());
                     myApp._adapter.setTodoList(myApp.getItemsList());
                     Context context = getApplicationContext();
                     CharSequence text = "Edition was made successfully";
@@ -65,7 +66,8 @@ public class EditTodoActivity extends AppCompatActivity {
         markDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ( !todo._isDone) {
+                Todo todo = myApp.getTodoItemById(todoId);
+                if ( !(todo.getIsDone())) {
                     myApp.markTodoAsDone(todo);
                     myApp._adapter.setTodoList(myApp.getItemsList());
 

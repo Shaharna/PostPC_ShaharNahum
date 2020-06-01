@@ -58,13 +58,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTodoClicked(Todo todo) {
                 Intent intent;
-                if (!todo._isDone) {
+                if (!(todo.getIsDone())) {
                     intent = new Intent(MainActivity.this, EditTodoActivity.class);
                 }
                 else{
                         intent = new Intent(MainActivity.this, PressedTodoActivity.class);
                     }
-                intent.putExtra("selected todo id", todo._id);
+                intent.putExtra("selected todo id", todo.getId());
                 startActivity(intent);
                 }
         });

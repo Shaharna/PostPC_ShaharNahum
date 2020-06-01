@@ -2,7 +2,7 @@
     <string name="app_name">PostPC_ShaharNahum</string>
     <string name="create">Create</string>
     <string name="what_s_your_todo">What\'s your TODO?</string>
-    <string name="are_you_sure_to_delete">Are You Sure to delete?</string>
+    <string name="are_you_sure_to_delete">Are You Sure you want to delete?</string>
     <string name="close">Close</string>
     <string name="delete">Delete</string>
     <string name="edit_your_todo">EDIT YOUR TODO HERE</string>

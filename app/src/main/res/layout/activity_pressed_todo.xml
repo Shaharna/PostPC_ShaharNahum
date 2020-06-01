@@ -69,7 +69,7 @@
         android:padding="10dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/colorGreenApprove"
+        android:background="@color/colorApproveBtn"
         android:textColor="#FFF"/>
 
     <Button
@@ -84,7 +84,7 @@
         android:padding="10dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/colorGreenApprove"
+        android:background="@color/colorDeleteBtn"
         android:textColor="#FFF"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
